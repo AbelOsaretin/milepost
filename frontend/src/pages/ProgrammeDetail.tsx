@@ -890,7 +890,10 @@ export const ProgrammeDetail = () => {
                       Attestations, standing, policy, and treasury addresses are
                       read from <span className="numeric">get_config</span>.
                     </p>
-                    <Link to="/funders" className="programme-link">
+                    <Link
+                      to={`/funders?programme=${encodeURIComponent(programmeId)}`}
+                      className="programme-link"
+                    >
                       Back to funder dashboard
                     </Link>
                   </div>

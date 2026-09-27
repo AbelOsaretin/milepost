@@ -1,12 +1,13 @@
 import { useMemo, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ContributeFlow } from '../components/funder/ContributeFlow';
 import { ContributionList } from '../components/funder/ContributionList';
 import { SeededProgrammeTools } from '../components/funder/SeededProgrammeTools';
 import { SignInSheet } from '../components/layout/SignInSheet';
 import { useWallet } from '../context/useWallet';
 import { FIXTURE_BALANCE, FIXTURE_CONTRIBUTIONS } from '../fixtures/funding';
-import { useIndexedList } from '../hooks';
+import { useIndexedList, useProgrammeParam } from '../hooks';
+import { ProgrammeParamNotice } from '../components/programme/ProgrammeParamNotice';
 import { contributionCard, fundingTotals } from '../lib/funding';
 import { fetchProgrammes } from '../lib/indexer';
 import { formatUsdc, mergeProgrammes } from '../lib/programmeView';
@@ -30,7 +31,7 @@ const SIGNED_OUT_PREVIEW = [
  */
 export const FunderDashboard = () => {
   const { address } = useWallet();
-  const [params] = useSearchParams();
+  const programmeParam = useProgrammeParam();
   const [signInOpen, setSignInOpen] = useState(false);
   const [refunded, setRefunded] = useState<ReadonlySet<string>>(() => new Set());
 
@@ -114,11 +115,13 @@ export const FunderDashboard = () => {
             </div>
           </section>
 
+          <ProgrammeParamNotice state={programmeParam} />
+
           <div className="funding-grid">
             <ContributionList cards={cards} sampleIds={sampleIds} onRefunded={markRefunded} />
             <ContributeFlow
               programmes={programmes}
-              linkedProgrammeId={params.get('programme')}
+              linkedProgrammeId={programmeParam.status === 'valid' ? programmeParam.programmeId : null}
               balance={BigInt(FIXTURE_BALANCE)}
             />
           </div>

@@ -3,11 +3,14 @@ import { useWallet } from '../context/useWallet';
 import { RecipientNav } from '../components/recipient/RecipientNav';
 import { RecipientAwards } from '../components/recipient/RecipientAwards';
 import { ApplyForm } from '../components/recipient/ApplyForm';
+import { ProgrammeParamNotice } from '../components/programme/ProgrammeParamNotice';
+import { useProgrammeParam } from '../hooks';
 import './RecipientDashboard.css';
 
 export function RecipientDashboard() {
   const { address, connect } = useWallet();
   const [searchParams] = useSearchParams();
+  const programmeParam = useProgrammeParam();
 
   // If ?programme= or ?apply= is in query, render the Apply form
   const isApply = searchParams.has('programme') || searchParams.has('apply');
@@ -62,7 +65,16 @@ export function RecipientDashboard() {
       ) : (
         <>
           <RecipientNav currentSection={isApply ? 'apply' : 'awards'} />
-          {isApply ? <ApplyForm /> : <RecipientAwards />}
+          <ProgrammeParamNotice state={programmeParam} />
+          {isApply ? (
+            <ApplyForm
+              preselectedProgrammeId={
+                programmeParam.status === 'valid' ? (programmeParam.programmeId ?? undefined) : undefined
+              }
+            />
+          ) : (
+            <RecipientAwards />
+          )}
         </>
       )}
     </section>

@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAnnouncer } from '../context/useAnnouncer';
+import { useProgrammeParam } from '../hooks';
+import { ProgrammeParamNotice } from '../components/programme/ProgrammeParamNotice';
 import { Button, Select } from '../components/ui';
 import { FIXTURE_PROGRAMMES } from '../fixtures/programmes';
 import {
@@ -28,7 +30,12 @@ type EntryState = 'idle' | 'pending' | 'done';
  */
 export const Keepalive = () => {
   const announce = useAnnouncer();
-  const [programmeId, setProgrammeId] = useState<string>(FIXTURE_PROGRAMMES[0]?.id ?? '');
+  const programmeParam = useProgrammeParam();
+  const [programmeId, setProgrammeId] = useState<string>(() =>
+    programmeParam.status === 'valid' && programmeParam.programmeId
+      ? programmeParam.programmeId
+      : (FIXTURE_PROGRAMMES[0]?.id ?? ''),
+  );
   const [state, setState] = useState<Record<string, EntryState>>({});
 
   const selected = FIXTURE_PROGRAMMES.find((p) => p.id === programmeId) ?? FIXTURE_PROGRAMMES[0];
@@ -73,6 +80,8 @@ export const Keepalive = () => {
           network archives it.
         </p>
       </header>
+
+      <ProgrammeParamNotice state={programmeParam} />
 
       <p className="keepalive-page__note">
         The network archives stored entries that nobody extends. Anyone can extend them, and

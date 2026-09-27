@@ -13,7 +13,15 @@ import {
   Wallet,
 } from 'lucide-react';
 import { contract, type Award, type Mode } from '@milepost/program';
-import { useContractRead, useContractResult, useProgramme, useTransaction, useAnnounceTransaction } from '../hooks';
+import {
+  useAnnounceTransaction,
+  useContractRead,
+  useContractResult,
+  useProgramme,
+  useProgrammeParam,
+  useTransaction,
+} from '../hooks';
+import { ProgrammeParamNotice } from '../components/programme/ProgrammeParamNotice';
 import { useWallet } from '../context/useWallet';
 import { useAnnouncer } from '../context/useAnnouncer';
 import { AsyncView, Loading } from '../components/state/AsyncStates';
@@ -101,7 +109,10 @@ function FinalizeBoard() {
       }),
     [],
   );
-  const [finPid, setFinPid] = useState<string>(REVIEW_PROGRAMME_ID);
+  const programmeParam = useProgrammeParam();
+  const [finPid, setFinPid] = useState<string>(() =>
+    programmeParam.status === 'valid' && programmeParam.programmeId ? programmeParam.programmeId : REVIEW_PROGRAMME_ID,
+  );
   const [finState, setFinState] = useState<Record<string, 'pending' | 'done' | 'error'>>({});
 
   const selected = ordered.find((p) => p.id === finPid) ?? ordered[0];
@@ -152,6 +163,7 @@ function FinalizeBoard() {
 
   return (
     <section className="finalize-board" aria-label="Finalize awards">
+      <ProgrammeParamNotice state={programmeParam} />
       <p className="finalize-board__note">
         Anyone can finalize, so no one can strand an applicant by not pressing a button. You
         don&rsquo;t need an admin account.
