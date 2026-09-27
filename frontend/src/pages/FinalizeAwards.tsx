@@ -13,7 +13,7 @@ import {
   Wallet,
 } from 'lucide-react';
 import { contract, type Award, type Mode } from '@milepost/program';
-import { useContractRead, useContractResult, useProgramme, useTransaction } from '../hooks';
+import { useContractRead, useContractResult, useProgramme, useTransaction, useAnnounceTransaction } from '../hooks';
 import { useWallet } from '../context/useWallet';
 import { useAnnouncer } from '../context/useAnnouncer';
 import { AsyncView, Loading } from '../components/state/AsyncStates';
@@ -327,6 +327,14 @@ export const FinalizeAwards = () => {
       setSettledAward(result.unwrap());
       application.refetch();
     },
+  });
+  useAnnounceTransaction({
+    phase: finalizeTx.phase,
+    error: finalizeTx.error,
+    pending: 'Finalizing the award…',
+    success: settledAward
+      ? `Award finalized at ${formatAmount(settledAward.granted, { asset: 'XLM' })}.`
+      : 'Award finalized.',
   });
 
   const quorum = config.data?.quorum ?? 0;
@@ -686,7 +694,6 @@ export const FinalizeAwards = () => {
                         return (
                           <div
                             className={`notice ${err.kind === 'none' ? '' : 'notice--blocked'}`}
-                            role="alert"
                           >
                             <p style={{ margin: 0, fontWeight: 600 }}>
                               {err.message}
