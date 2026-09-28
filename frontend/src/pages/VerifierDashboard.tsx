@@ -10,6 +10,7 @@ import { truncateAddress } from '../lib/format';
 import { explain } from '../lib/errors';
 import { Badge, Button, Field } from '../components/ui';
 import { ErrorPanel, PendingState } from '../components/state/AsyncStates';
+import { usePageTitle } from '../hooks/usePageTitle';
 import {
   FIXTURE_MY_ATTESTATIONS,
   FIXTURE_VERIFIER_QUEUE,
@@ -32,6 +33,7 @@ type ItemStatus = 'idle' | 'pending' | 'error' | 'done' | 'declined';
  * tagged as sample data.
  */
 export const VerifierDashboard = () => {
+  usePageTitle('Verifier Dashboard');
   const { address, connect } = useWallet();
   const { attest } = useSoroban();
   const announce = useAnnouncer();
