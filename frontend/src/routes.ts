@@ -28,6 +28,22 @@ export const APP_ROUTES: AppRoute[] = [
   { path: '/schemas/register', label: 'Register schema', title: 'Register Schema' },
   { path: '/keepalive', label: 'Keepalive', title: 'Keepalive' },
   { path: '/admin/payees', label: 'Payee management', title: 'Payee Management' },
+  { path: '/directory', label: 'Programme directory' },
+  { path: '/programme', label: 'Programme detail' },
+  { path: '/funders', label: 'Funders' },
+  { path: '/recipients', label: 'Recipients' },
+  { path: '/recipients/standing', label: 'Standing' },
+  { path: '/recipients/award-progress', label: 'Award progress' },
+  { path: '/recipients/application-timeline', label: 'Application timeline' },
+  { path: '/verifiers', label: 'Verifiers' },
+  { path: '/finalize', label: 'Finalize awards' },
+  { path: '/policy', label: 'Spend policy' },
+  { path: '/admin', label: 'Admin' },
+  { path: '/admin/standing', label: 'Standing writers' },
+  { path: '/attestations', label: 'Attestation lookup' },
+  { path: '/schemas/register', label: 'Register schema' },
+  { path: '/keepalive', label: 'Keepalive' },
+  { path: '/admin/payees', label: 'Payee management' },
 ];
 
 /**

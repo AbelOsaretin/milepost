@@ -52,6 +52,8 @@ const SpendPolicy = lazyWithRetry(() =>
 const RegistryAdmin = lazyWithRetry(() =>
   import("./pages/RegistryAdmin").then((m) => ({ default: m.RegistryAdmin })),
 );
+const AdminStanding = lazy(() =>
+  import("./pages/AdminStanding").then((m) => ({ default: m.AdminStanding })),
 const AdminDashboard = lazyWithRetry(() =>
   import("./pages/AdminDashboard").then((m) => ({ default: m.AdminDashboard })),
 );
@@ -83,7 +85,7 @@ const ROUTE_ELEMENTS: Record<string, ReactElement> = {
   "/finalize": <FinalizeAwards />,
   "/policy": <SpendPolicy />,
   "/admin": <RegistryAdmin />,
-  "/admin/standing": <AdminDashboard />,
+  "/admin/standing": <AdminStanding />,
   "/attestations": <AttestationLookup />,
   "/schemas/register": <RegisterSchema />,
   "/keepalive": <Keepalive />,
